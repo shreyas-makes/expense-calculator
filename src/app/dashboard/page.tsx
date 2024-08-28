@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { redirect } from 'next/navigation'
 import SavingsExpensesTracker from '@/components/SavingsExpensesTracker'
@@ -20,18 +20,7 @@ export default function Dashboard() {
       }
     }
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      if (!session) {
-        redirect('/')
-      }
-    })
-
     checkSession()
-
-    return () => subscription.unsubscribe()
   }, [])
 
   if (!session) {

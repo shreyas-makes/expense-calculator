@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Trash2, LogOut } from "lucide-react"
 import { supabase } from '@/lib/supabase'
+import { Session } from '@supabase/supabase-js'
 
 type Transaction = {
   id: number
