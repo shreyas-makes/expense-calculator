@@ -12,12 +12,15 @@ export default function Home() {
   const router = useRouter()
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const fetchSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
       setSession(session)
       if (!session) {
         router.push('/')
       }
-    })
+    }
+
+    fetchSession()
 
     const {
       data: { subscription },
@@ -35,7 +38,7 @@ export default function Home() {
 
   if (!session) {
     return <Auth />
-  } else {
-    return <SavingsExpensesTracker />
   }
+  
+  return <SavingsExpensesTracker />
 }

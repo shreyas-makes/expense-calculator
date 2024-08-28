@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -44,11 +44,7 @@ export default function SavingsExpensesTracker() {
   const [amount, setAmount] = useState("")
   const [type, setType] = useState<"income" | "expense">("income")
 
-  useEffect(() => {
-    fetchTransactions()
-  }, [])
-
-  const fetchTransactions = async () => {
+  const fetchTransactions = useCallback(async () => {
     try {
       const response = await fetch('/api/transactions')
       if (!response.ok) throw new Error('Failed to fetch transactions')
@@ -57,7 +53,11 @@ export default function SavingsExpensesTracker() {
     } catch (error) {
       console.error('Error fetching transactions:', error)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchTransactions()
+  }, [fetchTransactions])
 
   const addTransaction = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -73,7 +73,7 @@ export default function SavingsExpensesTracker() {
           throw new Error(`Failed to add transaction: ${JSON.stringify(errorData)}`);
         }
         const newTransaction = await response.json()
-        setTransactions([newTransaction, ...transactions])
+        setTransactions(prevTransactions => [newTransaction, ...prevTransactions])
         setDescription("")
         setAmount("")
       } catch (error) {
@@ -86,7 +86,7 @@ export default function SavingsExpensesTracker() {
     try {
       const response = await fetch(`/api/transactions/${id}`, { method: 'DELETE' })
       if (!response.ok) throw new Error('Failed to delete transaction')
-      setTransactions(transactions.filter(transaction => transaction.id !== id))
+      setTransactions(prevTransactions => prevTransactions.filter(transaction => transaction.id !== id))
     } catch (error) {
       console.error('Error deleting transaction:', error)
     }
