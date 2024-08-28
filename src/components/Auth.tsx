@@ -19,7 +19,7 @@ export default function Auth() {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) throw error
     } catch (error) {
-      handleError(error)
+      handleError(error);
     } finally {
       setLoading(false)
     }
@@ -33,19 +33,23 @@ export default function Auth() {
       if (error) throw error
       alert('Check your email for the login link!')
     } catch (error) {
-      handleError(error)
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('An unknown error occurred');
+      }
     } finally {
       setLoading(false)
     }
   }
 
   const handleError = (error: unknown) => {
-    if (error instanceof AuthError) {
-      alert(error.message)
-    } else if (error instanceof Error) {
-      alert(error.message)
+    if (error instanceof Error) {
+      alert(error.message);
+    } else if (typeof error === 'string') {
+      alert(error);
     } else {
-      alert('An unexpected error occurred')
+      alert('An unknown error occurred');
     }
   }
 
