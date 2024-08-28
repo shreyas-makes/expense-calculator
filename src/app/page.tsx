@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import SavingsExpensesTracker from '@/components/SavingsExpensesTracker'
 import Auth from '@/components/Auth'
+import { Session } from '@supabase/supabase-js'
 
 export default function Home() {
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState<Session | null>(null)
   const router = useRouter()
 
   useEffect(() => {
