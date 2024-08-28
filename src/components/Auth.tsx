@@ -18,7 +18,7 @@ export default function Auth() {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) throw error
     } catch (error) {
-      alert(error.message)
+      alert(error instanceof Error ? error.message : 'An error occurred')
     } finally {
       setLoading(false)
     }
@@ -32,7 +32,7 @@ export default function Auth() {
       if (error) throw error
       alert('Check your email for the login link!')
     } catch (error) {
-      alert(error.message)
+      alert(error instanceof Error ? error.message : 'An error occurred')
     } finally {
       setLoading(false)
     }
