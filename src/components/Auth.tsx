@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { AuthError } from '@supabase/supabase-js'
 
 export default function Auth() {
   const [loading, setLoading] = useState(false)
@@ -18,7 +19,11 @@ export default function Auth() {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) throw error
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'An error occurred')
+      if (error instanceof AuthError) {
+        alert(error.message)
+      } else {
+        alert('An unexpected error occurred')
+      }
     } finally {
       setLoading(false)
     }
@@ -32,7 +37,11 @@ export default function Auth() {
       if (error) throw error
       alert('Check your email for the login link!')
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'An error occurred')
+      if (error instanceof AuthError) {
+        alert(error.message)
+      } else {
+        alert('An unexpected error occurred')
+      }
     } finally {
       setLoading(false)
     }
