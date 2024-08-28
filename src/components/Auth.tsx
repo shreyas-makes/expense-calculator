@@ -51,7 +51,7 @@ export default function Auth() {
 
   return (
     <div className="h-screen flex items-center justify-center">
-      <div className="w-full max-w-md"> {/* Adjust max-width as needed */}
+      <div className="w-full max-w-md">
         <div className="card w-96 bg-base-100 shadow-xl">
           <div className="card-body">
             <h1 className="card-title text-2xl mb-4">Welcome to Savings Tracker</h1>
