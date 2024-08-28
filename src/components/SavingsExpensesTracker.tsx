@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Trash2, LogOut } from "lucide-react"
 import { supabase } from '@/lib/supabase'
 import { Session } from '@supabase/supabase-js'
+import { useRouter } from 'next/navigation'
 
 type Transaction = {
   id: number
@@ -37,6 +38,7 @@ const RadioButton = ({ value, label }: { value: string; label: string }) => (
 );
 
 export default function SavingsExpensesTracker() {
+  const router = useRouter()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [description, setDescription] = useState("")
   const [amount, setAmount] = useState("")
@@ -102,7 +104,12 @@ export default function SavingsExpensesTracker() {
   }
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
+    try {
+      await supabase.auth.signOut()
+      router.push('/')
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
   }
 
   return (

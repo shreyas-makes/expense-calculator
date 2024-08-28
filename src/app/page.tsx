@@ -14,6 +14,9 @@ export default function Home() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
+      if (!session) {
+        router.push('/')
+      }
     })
 
     const {
@@ -22,6 +25,8 @@ export default function Home() {
       setSession(session)
       if (session) {
         router.push('/dashboard')
+      } else {
+        router.push('/')
       }
     })
 
